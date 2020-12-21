@@ -29,10 +29,17 @@ def scrape_info():
 
     # Get the average temps
     news_title = soup.find("div", target="_self").get_text()
-    print(news_title)
+    #print(news_title)
 
     news_p = soup.find("div", class_="article_teaser_body").get_text()
-    print(news_p)
+    #print(news_p)
+
+    mars_news = {
+    "Title": news_title,
+    "Teaser": news_p
+    }
+
+    print(mars_news)
 
     # Visit JPL Mars Space Images 
 
