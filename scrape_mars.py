@@ -2,11 +2,6 @@ from splinter import Browser
 from bs4 import BeautifulSoup as bs
 import time
 
-???????????????????????????????????????????????
-Where does the reference to the app.py file go
-???????????????????????????????????????????????
-
-
 def init_browser():
     # @NOTE: Replace the path with your actual path to the chromedriver
     executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
@@ -82,6 +77,8 @@ def scrape_info():
     mars_facts = pd.read_html(url)
     #print(mars_facts[0])
     mars_facts = mars_facts[0]
+    #turns df back into html
+    mars_facts = mars_facts.to_html()
 
     # Visit Hemispheres
 
@@ -162,10 +159,18 @@ hemisphere_image_urls = [
     {"title": "Syrtis Major Hemisphere", "img_url": "..."},
 ]
 
-browser.back()
+
 
 # Quite the browser after scraping
 browser.quit()
+
+mars_data = {
+    "news_p": news_p,
+    "news_title": news_title,
+    "mars_facts" mars_facts, 
+    "featured_image": featured_image_url,
+    "hemisphere_image": hemisphere_image_urls
+}
 
 # Return results
 return mars_data
