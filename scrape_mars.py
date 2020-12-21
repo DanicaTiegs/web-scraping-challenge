@@ -22,19 +22,12 @@ def scrape_info():
     html = browser.html
     soup = bs(html, "html.parser")
 
-    # Get the average temps
-    news_title = soup.find("div", target="_self").get_text()
-    #print(news_title)
+   news_title = soup.find_all("div", class_="content_title")
+    print(news_title[1].get_text())
+    news_title = news_title[1].get_text()
 
     news_p = soup.find("div", class_="article_teaser_body").get_text()
-    #print(news_p)
-
-    mars_news = {
-    "Title": news_title,
-    "Teaser": news_p
-    }
-
-    print(mars_news)
+    print(news_p)   
 
     # Visit JPL Mars Space Images 
 
@@ -43,15 +36,15 @@ def scrape_info():
 
     browser.visit(url)
 
-    timer.sleep(1)
+    time.sleep(1)
 
     browser.links.find_by_partial_text("FULL IMAGE").click()
 
-    timer.sleep(1)
+    time.sleep(1)
 
     browser.links.find_by_partial_text("more info").click()
 
-    timer.sleep(1)
+    time.sleep(1)
 
     html = browser.html
 
@@ -59,8 +52,14 @@ def scrape_info():
     soup = BeautifulSoup(html, 'html.parser')
 
     featured_image_url = soup.find("figure", class_="lede")
-    print(featured_image_url["src"])
-    featured_image_url = featured_image_url["src"]
+    #print(featured_image_url.find("a"))
+    featured_image_url = featured_image_url.find("a", href = True)
+    featured_image_url = featured_image_url["href"]
+    print(featured_image_url)
+
+featured_image_url = "https://www.jpl.nasa.gov" + featured_image_url
+
+print(featured_image_url)   
 
     # Visit Mars Facts 
 
@@ -82,16 +81,31 @@ def scrape_info():
 
     # Visit Hemispheres
 
-    # URL of page to be scraped
+    hemisphere_image_urls = []
+
+# URL of page to be scraped
 url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
 
 browser.visit(url)
 
-timer.sleep(1)
+time.sleep(2)
 
 browser.links.find_by_partial_text("Hemisphere Enhanced")[0].click()
 
-timer.sleep(1)
+time.sleep(2)
+
+html = browser.html
+
+soup = BeautifulSoup(html, 'html.parser')
+
+img_url = soup.find("div", class_="downloads")
+print(img_url)
+img_url = img_url.find("a", href = True)
+img_url = img_url["href"]
+print(img_url)
+
+title = soup.find("h2", class_="title")
+title = title.get_text()
 
 hemisphere = {}
 
@@ -99,13 +113,25 @@ hemisphere["img_url"] = img_url
 
 hemisphere["title"] = title
 
-hempisphere_image_urls.append(hemisphere)
+hemisphere_image_urls.append(hemisphere)
 
 browser.back()
 
 browser.links.find_by_partial_text("Hemisphere Enhanced")[1].click()
 
-timer.sleep(1)
+time.sleep(2)
+
+html = browser.html
+
+soup = BeautifulSoup(html, 'html.parser')
+
+img_url = soup.find("div", class_="downloads")
+img_url = img_url.find("a", href = True)
+img_url = img_url["href"]
+print(img_url)
+
+title = soup.find("h2", class_="title")
+title = title.get_text()
 
 hemisphere = {}
 
@@ -113,13 +139,25 @@ hemisphere["img_url"] = img_url
 
 hemisphere["title"] = title
 
-hempisphere_image_urls.append(hemisphere)
+hemisphere_image_urls.append(hemisphere)
 
 browser.back()
 
 browser.links.find_by_partial_text("Hemisphere Enhanced")[2].click()
 
-timer.sleep(1)
+time.sleep(2)
+
+html = browser.html
+
+soup = BeautifulSoup(html, 'html.parser')
+
+img_url = soup.find("div", class_="downloads")
+img_url = img_url.find("a", href = True)
+img_url = img_url["href"]
+print(img_url)
+
+title = soup.find("h2", class_="title")
+title = title.get_text()
 
 hemisphere = {}
 
@@ -127,13 +165,25 @@ hemisphere["img_url"] = img_url
 
 hemisphere["title"] = title
 
-hempisphere_image_urls.append(hemisphere)
+hemisphere_image_urls.append(hemisphere)
 
 browser.back()
 
 browser.links.find_by_partial_text("Hemisphere Enhanced")[3].click()
 
-timer.sleep(1)
+time.sleep(1)
+
+html = browser.html
+
+soup = BeautifulSoup(html, 'html.parser')
+
+img_url = soup.find("div", class_="downloads")
+img_url = img_url.find("a", href = True)
+img_url = img_url["href"]
+print(img_url)
+
+title = soup.find("h2", class_="title")
+title = title.get_text()
 
 hemisphere = {}
 
@@ -141,16 +191,18 @@ hemisphere["img_url"] = img_url
 
 hemisphere["title"] = title
 
-hempisphere_image_urls.append(hemisphere)
+hemisphere_image_urls.append(hemisphere)
 
 browser.back()
 
-timer.sleep(1)
+time.sleep(2)
 
 html = browser.html
 
 # Create BeautifulSoup object; parse with 'html.parser'
 soup = BeautifulSoup(html, 'html.parser')
+
+print(hemisphere_image_urls)
 
 hemisphere_image_urls = [
     {"title": "Valles Marineris Hemisphere", "img_url": "..."},
@@ -159,9 +211,7 @@ hemisphere_image_urls = [
     {"title": "Syrtis Major Hemisphere", "img_url": "..."},
 ]
 
-
-
-# Quite the browser after scraping
+# Quit the browser after scraping
 browser.quit()
 
 mars_data = {
