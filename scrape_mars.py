@@ -80,7 +80,7 @@ def scrape_info():
     soup = BeautifulSoup(html, 'html.parser')
 
     mars_facts = pd.read_html(url)
-    print(mars_facts[0])
+    #print(mars_facts[0])
     mars_facts = mars_facts[0]
 
     # Visit Hemispheres
